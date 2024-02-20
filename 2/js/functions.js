@@ -7,11 +7,11 @@ function checkLength(string, maxLength) {
 }
 
 // Строка короче 20 символов
-console.log('ожидаю true', checkLength("проверяемая строка", 20));
+checkLength('проверяемая строка', 20);
 // Длина строки ровно 18 символов
-console.log('ожидаю true', checkLength("проверяемая строка", 18));
+checkLength('проверяемая строка', 18);
 // Строка длиннее 10 символов
-console.log('ожидаю false', checkLength("проверяемая строка", 10));
+checkLength('проверяемая строка', 10);
 
 
 
@@ -21,7 +21,7 @@ console.log('ожидаю false', checkLength("проверяемая строк
 //Они не должны учитываться при проверке!
 
 function isPalindrome(row) {
-  const normalizedRow = row.replaceAll(" ", "").toLowerCase();
+  const normalizedRow = row.replaceAll(' ', '').toLowerCase();
 
   let mirrorRow = '';
   for (let i = normalizedRow.length - 1; i >= 0 ; i--) {
@@ -32,14 +32,13 @@ function isPalindrome(row) {
 }
 
 // Строка является палиндромом
-console.log('ожидаю true', isPalindrome("топот")); // true
+isPalindrome('топот'); // true
 // Несмотря на разный регистр, тоже палиндром
-console.log('ожидаю true', isPalindrome("ДовОд")); // true
+isPalindrome('ДовОд'); // true
 // Это не палиндром
-console.log('ожидаю false', isPalindrome("Кекс")); // false
+isPalindrome('Кекс'); // false
 // Это палиндром
-console.log('ожидаю true', isPalindrome("Лёша на полке клопа нашёл ")); // true
-
+isPalindrome('Лёша на полке клопа нашёл '); // true
 
 
 //Функция принимает строку, извлекает содержащиеся в ней цифры от 0 до 9
@@ -61,12 +60,12 @@ function getNumber(row) {
 }
 
 
-console.log('ожидаю 2023', getNumber('2023 год'));            // 2023
-console.log('ожидаю 2022', getNumber('ECMAScript 2022'));     // 2022
-console.log('ожидаю 105', getNumber('1 кефир, 0.5 батона')); // 105
-console.log('ожидаю 7', getNumber('агент 007'));           // 7
-console.log('ожидаю Nan', getNumber('а я томат'));           // NaN
-console.log('ожидаю 2023', getNumber(2023)); // 2023
-console.log('ожидаю 1', getNumber(-1));   // 1
-console.log('ожидаю 15', getNumber(1.5));  // 15
+getNumber('2023 год'); // 2023
+getNumber('ECMAScript 2022'); // 2022
+getNumber('1 кефир, 0.5 батона'); // 105
+getNumber('агент 007'); // 7
+getNumber('а я томат'); // NaN
+getNumber(2023); // 2023
+getNumber(-1); // 1
+getNumber(1.5); // 15
 
