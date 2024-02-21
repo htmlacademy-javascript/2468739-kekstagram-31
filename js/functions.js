@@ -2,9 +2,7 @@
 //Она принимает строку, которую нужно проверить, и максимальную длину и возвращает true,
 // если строка меньше или равна указанной длине, и false, если строка длиннее.
 
-function checkLength(string, maxLength) {
-  return string.length <= maxLength;
-}
+const checkLength = (string, maxLength) => string.length <= maxLength;
 
 // Строка короче 20 символов
 checkLength('проверяемая строка', 20);
@@ -19,7 +17,7 @@ checkLength('проверяемая строка', 10);
 //Если хотите усложнить задание, предусмотрите случай, когда в строке встречаются пробелы.
 //Они не должны учитываться при проверке!
 
-function isPalindrome(row) {
+const isPalindrome = (row) => {
   const normalizedRow = row.replaceAll(' ', '').toLowerCase();
 
   let mirrorRow = '';
@@ -28,7 +26,7 @@ function isPalindrome(row) {
   }
 
   return normalizedRow === mirrorRow;
-}
+};
 
 // Строка является палиндромом
 isPalindrome('топот'); // true
@@ -46,7 +44,7 @@ isPalindrome('Лёша на полке клопа нашёл '); // true
 //Если хотите усложнить задание, предусмотрите случай, когда вместо строки приходит число.
 //Обратите внимание, что возвращать функция по-прежнему должна только целые положительные числа
 
-function getNumber(row) {
+const getNumber = (row) => {
   const normalizedRow = row.toString();
   let result = '';
   for (let i = 0; i < normalizedRow.length; i++) {
@@ -55,8 +53,8 @@ function getNumber(row) {
     }
   }
 
-  return result ? +result : NaN;
-}
+  return +result || NaN;
+};
 
 
 getNumber('2023 год'); // 2023
