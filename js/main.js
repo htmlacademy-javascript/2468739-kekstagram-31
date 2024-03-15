@@ -1,3 +1,3 @@
-import { renderPhotos } from "./renderPhotos";
+import { renderPhotos } from './renderPhotos';
 
 renderPhotos();
