@@ -1,4 +1,4 @@
-import {NAMES, MESSAGES} from './data';
+import {NAMES, MESSAGES} from './data.js';
 import {getRandomPositiveInteger, getRandomArrayElement, createConsecutiveIntegersGenerator} from './util.js';
 
 const QUANTITY_PHOTOS = 25;
