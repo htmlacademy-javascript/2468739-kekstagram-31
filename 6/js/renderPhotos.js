@@ -1,25 +1,23 @@
-import { createPhotos } from './createPhotos';
+const cardTemplate = document.querySelector('#picture').content;
+const container = document.querySelector('.pictures');
 
-export const renderPhotos = () => {
-  const elementTemplate = document.querySelector('#picture').content;
+export const renderPhotos = (photos) => {
   const fragment = document.createDocumentFragment();
-  const block = document.querySelector('.pictures');
 
-  const photos = createPhotos();
   photos.forEach(({ url, description, likes, comments }) => {
-    const newItemList = elementTemplate.cloneNode(true);
+    const cardElement = cardTemplate.cloneNode(true);
 
-    const newItemListImg = newItemList.querySelector('.picture__img');
-    const newItemListLikes = newItemList.querySelector('.picture__likes');
-    const newItemListComments = newItemList.querySelector('.picture__comments');
+    const imageElement = cardElement.querySelector('.picture__img');
+    const likesElement = cardElement.querySelector('.picture__likes');
+    const commentsElement = cardElement.querySelector('.picture__comments');
 
-    newItemListImg.src = url;
-    newItemListImg.alt = description;
-    newItemListLikes.textContent = likes;
-    newItemListComments.textContent = comments.length;
+    imageElement.src = url;
+    imageElement.alt = description;
+    likesElement.textContent = likes;
+    commentsElement.textContent = comments.length;
 
-    fragment.append(newItemList);
+    fragment.append(cardElement);
   });
 
-  block.append(fragment);
+  container.append(fragment);
 };
