@@ -4,8 +4,11 @@ const container = document.querySelector('.pictures');
 export const renderPhotos = (photos) => {
   const fragment = document.createDocumentFragment();
 
-  photos.forEach(({ url, description, likes, comments }) => {
+  photos.forEach(({ url, description, likes, comments, id }) => {
     const cardElement = cardTemplate.cloneNode(true);
+
+    const linkElement = cardElement.querySelector('.picture');
+    linkElement.dataset.id = id;
 
     const imageElement = cardElement.querySelector('.picture__img');
     const likesElement = cardElement.querySelector('.picture__likes');

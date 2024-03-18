@@ -14,3 +14,7 @@ export const createConsecutiveIntegersGenerator = () => {
     return ++number;
   };
 };
+
+export const isEscapeKey = (evt) => evt.key === 'Escape';
+
+export const getPhotoById = (id, photos) => photos.find((photo) => photo.id === id);
