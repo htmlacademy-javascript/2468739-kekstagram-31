@@ -1,5 +1,9 @@
-import {NAMES, MESSAGES} from './data.js';
-import {getRandomPositiveInteger, getRandomArrayElement, createConsecutiveIntegersGenerator} from './util.js';
+import { NAMES, MESSAGES } from './data.js';
+import {
+  getRandomPositiveInteger,
+  getRandomArrayElement,
+  createConsecutiveIntegersGenerator,
+} from './utils.js';
 
 const QUANTITY_PHOTOS = 25;
 const MIN_LIKES = 15;
@@ -24,9 +28,10 @@ const createPhoto = (el, i) => ({
   description: `Фотография №${i + 1}`,
   likes: getRandomPositiveInteger(MIN_LIKES, MAX_LIKES),
   comments: Array.from(
-    {length: getRandomPositiveInteger(MIN_COMMENTS, MAX_COMMENTS)},
+    { length: getRandomPositiveInteger(MIN_COMMENTS, MAX_COMMENTS) },
     createComment
   ),
 });
 
-export const createPhotos = () => Array.from({length: QUANTITY_PHOTOS}, createPhoto);
+export const createPhotos = () =>
+  Array.from({ length: QUANTITY_PHOTOS }, createPhoto);
