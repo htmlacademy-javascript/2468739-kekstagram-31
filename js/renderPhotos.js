@@ -8,7 +8,7 @@ export const renderPhotos = (photos) => {
     const cardElement = cardTemplate.cloneNode(true);
 
     const linkElement = cardElement.querySelector('.picture');
-    linkElement.dataset.id = id;
+    linkElement.dataset.pictureId = id;
 
     const imageElement = cardElement.querySelector('.picture__img');
     const likesElement = cardElement.querySelector('.picture__likes');
