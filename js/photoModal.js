@@ -47,15 +47,24 @@ const renderPhoto = ({ url, description, likes }) => {
   photoModal.querySelector('.likes-count').textContent = likes;
 };
 
+const loaderButtonClickHandler = () => {
+  renderComments();
+};
+
 const documentKeydownHandler = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    hidePhotoModal();
-  }
-};
+    photoModal.classList.add('hidden');
+    document.body.classList.remove('modal-open');
+    commentsLoaderButton.classList.remove('hidden');
 
-const loaderButtonClickHandler = () => {
-  renderComments();
+    document.removeEventListener('keydown', documentKeydownHandler);
+    commentsLoaderButton.removeEventListener('click', loaderButtonClickHandler);
+
+    commentList.innerHTML = '';
+    comments.length = 0;
+    showCommentsCounter = DEFAULT_SHOW_COMMENTS_COUNT;
+  }
 };
 
 const showPhotoModal = (evt, photos) => {
@@ -88,7 +97,6 @@ const hidePhotoModal = () => {
   commentList.innerHTML = '';
   comments.length = 0;
   showCommentsCounter = DEFAULT_SHOW_COMMENTS_COUNT;
-
 };
 
 closeButton.addEventListener('click', (evt) => {
