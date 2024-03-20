@@ -7,17 +7,17 @@ const comments = [];
 let showCommentsCounter = DEFAULT_SHOW_COMMENTS_COUNT;
 
 const photosContainer = document.querySelector('.pictures');
-const photoModal = document.querySelector('.big-picture');
-const closeButton = photoModal.querySelector('.big-picture__cancel');
-const commentList = photoModal.querySelector('.social__comments');
-const commentsLoaderButton = photoModal.querySelector('.comments-loader');
+const modal = document.querySelector('.big-picture');
+const closeModalButtonElement = modal.querySelector('.big-picture__cancel');
+const commentList = modal.querySelector('.social__comments');
+const loaderCommentsButtonElement = modal.querySelector('.comments-loader');
 
 const isMaxShowCommentsLength = () => showCommentsCounter >= comments.length;
 
 const renderComments = () => {
-  photoModal.querySelector('.social__comment-shown-count').textContent =
+  modal.querySelector('.social__comment-shown-count').textContent =
     comments.length < showCommentsCounter ? comments.length : showCommentsCounter;
-  photoModal.querySelector('.social__comment-total-count').textContent =
+  modal.querySelector('.social__comment-total-count').textContent =
     comments.length;
   const showComments = comments.slice(0, showCommentsCounter);
 
@@ -35,43 +35,47 @@ const renderComments = () => {
   commentList.innerHTML = commentElements.join();
 
   if (isMaxShowCommentsLength()) {
-    commentsLoaderButton.classList.add('hidden');
+    loaderCommentsButtonElement.classList.add('hidden');
     return;
   }
   showCommentsCounter += STEP_SHOW_COMMENTS_COUNT;
 };
 
 const renderPhoto = ({ url, description, likes }) => {
-  photoModal.querySelector('.big-picture__img img').src = url;
-  photoModal.querySelector('.social__caption').textContent = description;
-  photoModal.querySelector('.likes-count').textContent = likes;
+  modal.querySelector('.big-picture__img img').src = url;
+  modal.querySelector('.social__caption').textContent = description;
+  modal.querySelector('.likes-count').textContent = likes;
 };
 
 const loaderButtonClickHandler = () => {
   renderComments();
 };
 
+const closeModal = () => {
+  modal.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+  loaderCommentsButtonElement.classList.remove('hidden');
+
+  loaderCommentsButtonElement.removeEventListener('click', loaderButtonClickHandler);
+
+  commentList.innerHTML = '';
+  comments.length = 0;
+  showCommentsCounter = DEFAULT_SHOW_COMMENTS_COUNT;
+};
+
 const documentKeydownHandler = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    photoModal.classList.add('hidden');
-    document.body.classList.remove('modal-open');
-    commentsLoaderButton.classList.remove('hidden');
-
+    closeModal();
     document.removeEventListener('keydown', documentKeydownHandler);
-    commentsLoaderButton.removeEventListener('click', loaderButtonClickHandler);
-
-    commentList.innerHTML = '';
-    comments.length = 0;
-    showCommentsCounter = DEFAULT_SHOW_COMMENTS_COUNT;
   }
 };
 
-const showPhotoModal = (evt, photos) => {
+const openModal = (evt, photos) => {
   const cardElement = evt.target.closest('.picture');
   if (cardElement) {
     evt.preventDefault();
-    photoModal.classList.remove('hidden');
+    modal.classList.remove('hidden');
     document.body.classList.add('modal-open');
 
     document.addEventListener('keydown', documentKeydownHandler);
@@ -82,30 +86,17 @@ const showPhotoModal = (evt, photos) => {
     comments.push(...photo.comments);
     renderComments();
 
-    commentsLoaderButton.addEventListener('click', loaderButtonClickHandler);
+    loaderCommentsButtonElement.addEventListener('click', loaderButtonClickHandler);
   }
 };
 
-const hidePhotoModal = () => {
-  photoModal.classList.add('hidden');
-  document.body.classList.remove('modal-open');
-  commentsLoaderButton.classList.remove('hidden');
-
+closeModalButtonElement.addEventListener('click', () => {
+  closeModal();
   document.removeEventListener('keydown', documentKeydownHandler);
-  commentsLoaderButton.removeEventListener('click', loaderButtonClickHandler);
-
-  commentList.innerHTML = '';
-  comments.length = 0;
-  showCommentsCounter = DEFAULT_SHOW_COMMENTS_COUNT;
-};
-
-closeButton.addEventListener('click', (evt) => {
-  evt.preventDefault();
-  hidePhotoModal();
 });
 
 export const addPhotoClickHandler = (photos) => {
   photosContainer.addEventListener('click', (evt) => {
-    showPhotoModal(evt, photos);
+    openModal(evt, photos);
   });
 };
