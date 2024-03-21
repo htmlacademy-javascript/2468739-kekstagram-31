@@ -1,4 +1,4 @@
-import { isEscapeKey,getPhotoById } from './utils.js';
+import { isEscapeKey, getPhotoById } from './utils.js';
 
 const DEFAULT_SHOW_COMMENTS_COUNT = 5;
 const STEP_SHOW_COMMENTS_COUNT = 5;
@@ -95,8 +95,10 @@ closeModalButtonElement.addEventListener('click', () => {
   document.removeEventListener('keydown', documentKeydownHandler);
 });
 
-export const addPhotoClickHandler = (photos) => {
+const addPhotoClickHandler = (photos) => {
   photosContainer.addEventListener('click', (evt) => {
     openModal(evt, photos);
   });
 };
+
+export { addPhotoClickHandler };

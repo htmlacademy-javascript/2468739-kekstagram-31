@@ -1,13 +1,13 @@
-export const getRandomPositiveInteger = (min, max) => {
+const getRandomPositiveInteger = (min, max) => {
   const lower = Math.floor(Math.min(Math.abs(min), Math.abs(max)));
   const upper = Math.ceil(Math.max(Math.abs(min), Math.abs(max)));
 
   return Math.floor(Math.random() * (upper - lower + 1) + lower);
 };
 
-export const getRandomArrayElement = (arr) => arr[getRandomPositiveInteger(0, arr.length - 1)];
+const getRandomArrayElement = (arr) => arr[getRandomPositiveInteger(0, arr.length - 1)];
 
-export const createConsecutiveIntegersGenerator = () => {
+const createConsecutiveIntegersGenerator = () => {
   let number = 0;
 
   return function () {
@@ -15,6 +15,14 @@ export const createConsecutiveIntegersGenerator = () => {
   };
 };
 
-export const isEscapeKey = (evt) => evt.key === 'Escape';
+const isEscapeKey = (evt) => evt.key === 'Escape';
 
-export const getPhotoById = (id, photos) => photos.find((photo) => photo.id === id);
+const getPhotoById = (id, photos) => photos.find((photo) => photo.id === id);
+
+export {
+  getRandomPositiveInteger,
+  getRandomArrayElement,
+  createConsecutiveIntegersGenerator,
+  isEscapeKey,
+  getPhotoById
+};
