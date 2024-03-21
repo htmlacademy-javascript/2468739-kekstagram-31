@@ -1,7 +1,7 @@
 const cardTemplate = document.querySelector('#picture').content;
 const container = document.querySelector('.pictures');
 
-export const renderPhotos = (photos) => {
+const renderPhotos = (photos) => {
   const fragment = document.createDocumentFragment();
 
   photos.forEach(({ url, description, likes, comments, id }) => {
@@ -24,3 +24,5 @@ export const renderPhotos = (photos) => {
 
   container.append(fragment);
 };
+
+export { renderPhotos };

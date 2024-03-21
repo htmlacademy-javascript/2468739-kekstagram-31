@@ -1,3 +1,4 @@
+import './form.js';
 import { createPhotos } from './createPhotos.js';
 import { renderPhotos } from './renderPhotos.js';
 import { addPhotoClickHandler } from './photoModal.js';

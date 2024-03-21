@@ -33,5 +33,7 @@ const createPhoto = (el, i) => ({
   ),
 });
 
-export const createPhotos = () =>
+const createPhotos = () =>
   Array.from({ length: QUANTITY_PHOTOS }, createPhoto);
+
+export { createPhotos };

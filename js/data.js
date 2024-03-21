@@ -25,4 +25,7 @@ const NAMES = [
   'Екатерина',
 ];
 
-export {MESSAGES, NAMES};
+export {
+  MESSAGES,
+  NAMES
+};
