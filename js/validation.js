@@ -1,89 +1,89 @@
 const MAX_COMMENT_LENGTH = 140;
+const MAX_HASHTAG_COUNT = 5;
 
 const ErrorMessage = {
-  Hashtag: {
+  Hashtag:
+  {
     INVALID_HASHTAG: 'введён невалидный хэштег',
     BIG_QUANTITY: 'превышено количество хэштегов',
     REPEAT_HASHTAG: 'хэштеги повторяются',
   },
-  Comment: {
+  Comment:
+  {
     BIG_COMMENT_LENGTH:`длина комментария больше ${MAX_COMMENT_LENGTH} символов`,
   }
 };
 
-let message = '';
-
-const uploadFormElement = document.querySelector('.img-upload__form');
-const hashtagsInputElement = uploadFormElement.querySelector('.text__hashtags');
-const commentTextareaElement =
-  uploadFormElement.querySelector('.text__description');
-
-const getMessage = () => message;
-
-const pristine = new Pristine(
+const validation = (
   uploadFormElement,
-  {
-    classTo: 'img-upload__field-wrapper',
-    errorClass: 'img-upload__field-wrapper--error',
-    errorTextParent: 'img-upload__field-wrapper',
-  },
-);
+  hashtagsValueElement,
+  commentValueElement
+) => {
+  let message = '';
+  const getMessage = () => message;
 
-const validateHashtags = (hashtagsString) => {
-  const trimmedHashtagString = hashtagsString.trim();
-  if (!trimmedHashtagString) {
+  const pristine = new Pristine(
+    uploadFormElement,
+    {
+      classTo: 'img-upload__field-wrapper',
+      errorClass: 'img-upload__field-wrapper--error',
+      errorTextParent: 'img-upload__field-wrapper',
+    },
+  );
+
+  const validateHashtags = (hashtagsString) => {
+    const trimmedHashtagString = hashtagsString.trim();
+    if (!trimmedHashtagString) {
+      return true;
+    } else {
+      const hashtags = trimmedHashtagString.split(' ').filter((value) => value);
+      if (hashtags.length > MAX_HASHTAG_COUNT) {
+        message = ErrorMessage.Hashtag.BIG_QUANTITY;
+        return false;
+      }
+      if (
+        !hashtags.every(
+          (hashtag) => /^#[a-zа-яё0-9]{1,20}$/i.test(hashtag)
+        )
+      ) {
+        message = ErrorMessage.Hashtag.INVALID_HASHTAG;
+        return false;
+      }
+      if (
+        hashtags.some(
+          (value, index, hashtagsArray) => hashtagsArray.indexOf(value) !== index
+        )
+      ) {
+        message = ErrorMessage.Hashtag.REPEAT_HASHTAG;
+        return false;
+      }
+      return true;
+    }
+  };
+
+  const validateComment = (commentText) => {
+    if (commentText.length > MAX_COMMENT_LENGTH) {
+      message = ErrorMessage.Comment.BIG_COMMENT_LENGTH;
+      return false;
+    }
     return true;
-  } else {
-    const hashtags = trimmedHashtagString.split(' ');
-    if (hashtags.length > 5) {
-      message = ErrorMessage.Hashtag.BIG_QUANTITY;
-      return false;
-    }
-    if (
-      !hashtags.every(
-        (hashtag) => /^#[a-zа-яё0-9]{1,20}$/i.test(hashtag) || hashtag === ''
-      )
-    ) {
-      message = ErrorMessage.Hashtag.INVALID_HASHTAG;
-      return false;
-    }
-    if (
-      hashtags.some(
-        (value, index, hashtagsArray) => hashtagsArray.indexOf(value) !== index && value !== ''
-      )
-    ) {
-      message = ErrorMessage.Hashtag.REPEAT_HASHTAG;
-      return false;
-    }
-    return true;
-  }
+  };
+
+  pristine.addValidator(
+    hashtagsValueElement,
+    validateHashtags,
+    getMessage
+  );
+
+  pristine.addValidator(
+    commentValueElement,
+    validateComment,
+    getMessage
+  );
+
+  return pristine.validate();
 };
-
-const validateComment = (commentText) => {
-  if (commentText.length > MAX_COMMENT_LENGTH) {
-    message = ErrorMessage.Comment.BIG_COMMENT_LENGTH;
-    return false;
-  }
-  return true;
-};
-pristine.addValidator(
-  hashtagsInputElement,
-  validateHashtags,
-  getMessage
-);
-
-pristine.addValidator(
-  commentTextareaElement,
-  validateComment,
-  getMessage
-);
-
-uploadFormElement.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  pristine.validate();
-});
 
 export {
-  hashtagsInputElement,
-  commentTextareaElement,
+  validation
 };

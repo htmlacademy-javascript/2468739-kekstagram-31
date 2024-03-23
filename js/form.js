@@ -1,20 +1,24 @@
 import { isEscapeKey } from './utils.js';
-import { hashtagsInputElement, commentTextareaElement } from './validation.js';
+import { validation } from './validation.js';
+import { openPhotoEditor, closePhotoEditor } from './photoEditor.js';
 
-const uploadSectionElement = document.querySelector('.img-upload');
-const uploadFileInputElement =
-  uploadSectionElement.querySelector('.img-upload__input');
-const photoEditor = uploadSectionElement.querySelector('.img-upload__overlay');
-const closePhotoEditor = photoEditor.querySelector('.img-upload__cancel');
+const uploadFormElement = document.querySelector('.img-upload__form');
+const fileInputElement =
+  uploadFormElement.querySelector('.img-upload__input');
+const resetButtonElement = uploadFormElement.querySelector('.img-upload__cancel');
+const hashtagsValueElement = uploadFormElement.querySelector('.text__hashtags');
+const commentValueElement =
+  uploadFormElement.querySelector('.text__description');
+const pageBody = document.querySelector('body');
 
-hashtagsInputElement.addEventListener('keydown', (evt) => {
+hashtagsValueElement.addEventListener('keydown', (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     evt.stopPropagation();
   }
 });
 
-commentTextareaElement.addEventListener('keydown', (evt) => {
+commentValueElement.addEventListener('keydown', (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     evt.stopPropagation();
@@ -22,30 +26,50 @@ commentTextareaElement.addEventListener('keydown', (evt) => {
 });
 
 const closeForm = () => {
-  uploadFileInputElement.value = '';
-  photoEditor.classList.add('hidden');
-  document.body.classList.remove('modal-open');
+  fileInputElement.value = '';
+  closePhotoEditor();
+  pageBody.classList.remove('modal-open');
 };
 
 const documentKeydownHandler = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
+    if (document.activeElement === hashtagsValueElement || document.activeElement === commentValueElement) {
+      evt.stopPropagation();
+    }
     closeForm();
     document.removeEventListener('keydown', documentKeydownHandler);
   }
 };
 
 const openForm = () => {
-  photoEditor.classList.remove('hidden');
-  document.body.classList.add('modal-open');
+  openPhotoEditor();
+  pageBody.classList.add('modal-open');
   document.addEventListener('keydown', documentKeydownHandler);
 };
 
-uploadFileInputElement.addEventListener('change', () => {
+fileInputElement.addEventListener('change', () => {
   openForm();
 });
 
-closePhotoEditor.addEventListener('click', () => {
+resetButtonElement.addEventListener('click', () => {
   closeForm();
   document.removeEventListener('keydown', documentKeydownHandler);
+});
+
+uploadFormElement.addEventListener('input', () => {
+  validation(
+    uploadFormElement,
+    hashtagsValueElement,
+    commentValueElement
+  );
+});
+
+uploadFormElement.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  if (
+    validation(uploadFormElement, hashtagsValueElement, commentValueElement)
+  ) {
+    uploadFormElement.submit();
+  }
 });
