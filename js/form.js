@@ -1,5 +1,5 @@
 import { isEscapeKey } from './utils.js';
-import { validation } from './validation.js';
+import { validation, resetValidation } from './validation.js';
 import { openPhotoEditor, closePhotoEditor } from './photoEditor.js';
 
 const uploadFormElement = document.querySelector('.img-upload__form');
@@ -11,22 +11,10 @@ const commentValueElement =
   uploadFormElement.querySelector('.text__description');
 const pageBody = document.querySelector('body');
 
-hashtagsValueElement.addEventListener('keydown', (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    evt.stopPropagation();
-  }
-});
-
-commentValueElement.addEventListener('keydown', (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    evt.stopPropagation();
-  }
-});
-
 const closeForm = () => {
   fileInputElement.value = '';
+  uploadFormElement.reset();
+  resetValidation();
   closePhotoEditor();
   pageBody.classList.remove('modal-open');
 };
@@ -57,18 +45,15 @@ resetButtonElement.addEventListener('click', () => {
   document.removeEventListener('keydown', documentKeydownHandler);
 });
 
-uploadFormElement.addEventListener('input', () => {
-  validation(
-    uploadFormElement,
-    hashtagsValueElement,
-    commentValueElement
-  );
-});
+validation(
+  hashtagsValueElement,
+  commentValueElement
+);
 
 uploadFormElement.addEventListener('submit', (evt) => {
   evt.preventDefault();
   if (
-    validation(uploadFormElement, hashtagsValueElement, commentValueElement)
+    validation(hashtagsValueElement, commentValueElement)
   ) {
     uploadFormElement.submit();
   }
