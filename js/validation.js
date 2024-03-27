@@ -1,3 +1,5 @@
+const uploadFormElement = document.querySelector('.img-upload__form');
+
 const MAX_COMMENT_LENGTH = 140;
 const MAX_HASHTAG_COUNT = 5;
 
@@ -14,29 +16,30 @@ const ErrorMessage = {
   }
 };
 
-const validation = (
+const pristine = new Pristine(
   uploadFormElement,
+  {
+    classTo: 'img-upload__field-wrapper',
+    errorClass: 'img-upload__field-wrapper--error',
+    errorTextParent: 'img-upload__field-wrapper',
+  },
+);
+
+const validation = (
   hashtagsValueElement,
   commentValueElement
 ) => {
   let message = '';
   const getMessage = () => message;
-
-  const pristine = new Pristine(
-    uploadFormElement,
-    {
-      classTo: 'img-upload__field-wrapper',
-      errorClass: 'img-upload__field-wrapper--error',
-      errorTextParent: 'img-upload__field-wrapper',
-    },
-  );
-
   const validateHashtags = (hashtagsString) => {
     const trimmedHashtagString = hashtagsString.trim();
     if (!trimmedHashtagString) {
       return true;
     } else {
-      const hashtags = trimmedHashtagString.split(' ').filter((value) => value);
+      const hashtags = trimmedHashtagString
+        .toLowerCase()
+        .split(' ')
+        .filter((value) => value);
       if (hashtags.length > MAX_HASHTAG_COUNT) {
         message = ErrorMessage.Hashtag.BIG_QUANTITY;
         return false;
@@ -49,10 +52,9 @@ const validation = (
         message = ErrorMessage.Hashtag.INVALID_HASHTAG;
         return false;
       }
+      const uniqueArr = [...new Set(hashtags)];
       if (
-        hashtags.some(
-          (value, index, hashtagsArray) => hashtagsArray.indexOf(value) !== index
-        )
+        uniqueArr.length !== hashtags.length
       ) {
         message = ErrorMessage.Hashtag.REPEAT_HASHTAG;
         return false;
@@ -84,6 +86,9 @@ const validation = (
   return pristine.validate();
 };
 
+const resetValidation = () => pristine.reset();
+
 export {
-  validation
+  validation,
+  resetValidation
 };
