@@ -24,5 +24,5 @@ export {
   getRandomArrayElement,
   createConsecutiveIntegersGenerator,
   isEscapeKey,
-  getPhotoById
+  getPhotoById,
 };

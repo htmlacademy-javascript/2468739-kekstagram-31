@@ -6,7 +6,6 @@ const STEP_SHOW_COMMENTS_COUNT = 5;
 const comments = [];
 let showCommentsCounter = DEFAULT_SHOW_COMMENTS_COUNT;
 
-const photosContainer = document.querySelector('.pictures');
 const modal = document.querySelector('.big-picture');
 const closeModalButtonElement = modal.querySelector('.big-picture__cancel');
 const commentList = modal.querySelector('.social__comments');
@@ -95,10 +94,4 @@ closeModalButtonElement.addEventListener('click', () => {
   document.removeEventListener('keydown', documentKeydownHandler);
 });
 
-const addPhotoClickHandler = (photos) => {
-  photosContainer.addEventListener('click', (evt) => {
-    openModal(evt, photos);
-  });
-};
-
-export { addPhotoClickHandler };
+export { openModal };

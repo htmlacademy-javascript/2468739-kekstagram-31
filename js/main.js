@@ -1,8 +1,27 @@
 import './form.js';
-import { createPhotos } from './createPhotos.js';
+import { getData } from './api.js';
 import { renderPhotos } from './renderPhotos.js';
-import { addPhotoClickHandler } from './photoModal.js';
+import { openModal } from './photoModal.js';
+import {
+  showAlert,
+  deleteAlert,
+  ALERT_SHOW_TIME,
+  AlertTemplateId,
+} from './alert.js';
 
-const photos = createPhotos();
-renderPhotos(photos);
-addPhotoClickHandler(photos);
+const photosContainer = document.querySelector('.pictures');
+
+getData()
+  .then((photos) => {
+    renderPhotos(photos);
+    photosContainer.addEventListener('click', (evt) => {
+      openModal(evt, photos);
+    });
+  })
+  .catch(() => {
+    showAlert(AlertTemplateId.GET_DATA_ERROR);
+    setTimeout(
+      () => deleteAlert(),
+      ALERT_SHOW_TIME
+    );
+  });
