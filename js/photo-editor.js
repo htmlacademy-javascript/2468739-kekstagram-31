@@ -1,4 +1,4 @@
-import { Effects } from './constants.js';
+import { Effect } from './constants.js';
 import { resetScale } from './scale.js';
 
 const photoEditor = document.querySelector('.img-upload__overlay');
@@ -7,7 +7,7 @@ const sliderElement = photoEditor.querySelector('.effect-level__slider');
 const sliderValueElement = photoEditor.querySelector('.effect-level__value');
 const effectsList = photoEditor.querySelector('.effects__list');
 
-export const InlineStyles = {
+export const inlineStyles = {
   chrome: 'grayscale(value)',
   sepia: 'sepia(value)',
   marvin: 'invert(value%)',
@@ -20,7 +20,7 @@ let selectedEffect = 'none';
 sliderValueElement.value = 1;
 
 noUiSlider.create(sliderElement, {
-  ...Effects.DEFAULT,
+  ...Effect.DEFAULT,
   connect: 'lower',
   format:
   {
@@ -46,7 +46,7 @@ sliderElement.noUiSlider.on('update', () => {
     sliderElement.parentElement.classList.add('hidden');
   } else {
     sliderElement.parentElement.classList.remove('hidden');
-    previewImageElement.style.filter = InlineStyles[selectedEffect].replace('value', sliderValueElement.value);
+    previewImageElement.style.filter = inlineStyles[selectedEffect].replace('value', sliderValueElement.value);
   }
 });
 
@@ -55,7 +55,7 @@ effectsList.addEventListener('change', (evt) => {
   if (selectedEffect === 'none') {
     resetEffect();
   } else {
-    sliderElement.noUiSlider.updateOptions(Effects[selectedEffect.toUpperCase()]);
+    sliderElement.noUiSlider.updateOptions(Effect[selectedEffect.toUpperCase()]);
   }
 });
 

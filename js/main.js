@@ -1,7 +1,7 @@
-import './form.js';
+import { setPhotoFormSubmit } from './form.js';
 import { getData } from './api.js';
-import { renderPhotos } from './renderPhotos.js';
-import { openModal } from './photoModal.js';
+import { renderPhotos } from './render-photos.js';
+import { openModal } from './photo-modal.js';
 import {
   showAlert,
   deleteAlert,
@@ -25,3 +25,5 @@ getData()
       ALERT_SHOW_TIME
     );
   });
+
+setPhotoFormSubmit();

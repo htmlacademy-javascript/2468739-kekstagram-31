@@ -1,7 +1,7 @@
 import { isEscapeKey } from './utils.js';
 import { sendData } from './api.js';
 import { validation, resetValidation } from './validation.js';
-import { openPhotoEditor, closePhotoEditor } from './photoEditor.js';
+import { openPhotoEditor, closePhotoEditor } from './photo-editor.js';
 import {
   showAlert,
   deleteAlert,
@@ -86,7 +86,7 @@ validation(
   commentValueElement
 );
 
-uploadFormElement.addEventListener('submit', (evt) => {
+const setPhotoFormSubmit = () => uploadFormElement.addEventListener('submit', (evt) => {
   evt.preventDefault();
   if (validation(hashtagsValueElement, commentValueElement)) {
     blockSubmitButton();
@@ -107,3 +107,5 @@ uploadFormElement.addEventListener('submit', (evt) => {
       });
   }
 });
+
+export { setPhotoFormSubmit };

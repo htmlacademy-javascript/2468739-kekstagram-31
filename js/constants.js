@@ -1,4 +1,4 @@
-export const Effects = {
+export const Effect = {
   DEFAULT: {
     range: {
       min: 0,
