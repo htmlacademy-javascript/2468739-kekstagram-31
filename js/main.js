@@ -8,12 +8,15 @@ import {
   ALERT_SHOW_TIME,
   AlertTemplateId,
 } from './alert.js';
+import { setFilterButtonClickHandler, showFilters } from './photo-filters.js';
 
 const photosContainer = document.querySelector('.pictures');
 
 getData()
   .then((photos) => {
     renderPhotos(photos);
+    showFilters();
+    setFilterButtonClickHandler(photos);
     photosContainer.addEventListener('click', (evt) => {
       openModal(evt, photos);
     });

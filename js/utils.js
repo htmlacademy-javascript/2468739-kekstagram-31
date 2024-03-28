@@ -5,13 +5,22 @@ const getRandomPositiveInteger = (min, max) => {
   return Math.floor(Math.random() * (upper - lower + 1) + lower);
 };
 
-const getRandomArrayElement = (arr) => arr[getRandomPositiveInteger(0, arr.length - 1)];
+const getRandomArrayElement = (arr) =>
+  arr[getRandomPositiveInteger(0, arr.length - 1)];
 
 const createConsecutiveIntegersGenerator = () => {
   let number = 0;
 
   return function () {
     return ++number;
+  };
+};
+
+const debounce = (cb, timeoutDelay) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => cb.apply(this, rest), timeoutDelay);
   };
 };
 
@@ -25,4 +34,5 @@ export {
   createConsecutiveIntegersGenerator,
   isEscapeKey,
   getPhotoById,
+  debounce,
 };
