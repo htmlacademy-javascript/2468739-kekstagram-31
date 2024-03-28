@@ -1,7 +1,13 @@
 const cardTemplate = document.querySelector('#picture').content;
 const container = document.querySelector('.pictures');
 
+const deletePhotos = () => {
+  const photoElements = container.querySelectorAll('.picture');
+  photoElements.forEach((photoElement) => photoElement.remove());
+};
+
 const renderPhotos = (photos) => {
+  deletePhotos();
   const fragment = document.createDocumentFragment();
 
   photos.forEach(({ url, description, likes, comments, id }) => {

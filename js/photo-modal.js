@@ -17,7 +17,7 @@ const showCommentsLoaderButton = () => {
   commentsLoaderButton.classList.remove('hidden');
 };
 
-const renderBigPhoto = ({ url, description, likes }) => {
+const renderModalPhoto = ({ url, description, likes }) => {
   modal.querySelector('.big-picture__img img').src = url;
   modal.querySelector('.social__caption').textContent = description;
   modal.querySelector('.likes-count').textContent = likes;
@@ -58,7 +58,7 @@ const openModal = (evt, photos) => {
     document.addEventListener('keydown', documentKeydownHandler);
 
     const photo = getPhotoById(Number(cardElement.dataset.pictureId), photos);
-    renderBigPhoto(photo);
+    renderModalPhoto(photo);
 
     renderComments(photo.comments);
     if (isMaxShowCommentsLength()) {
