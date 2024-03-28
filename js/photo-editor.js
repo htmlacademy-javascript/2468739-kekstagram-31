@@ -7,6 +7,8 @@ const sliderElement = photoEditor.querySelector('.effect-level__slider');
 const sliderValueElement = photoEditor.querySelector('.effect-level__value');
 const effectsList = photoEditor.querySelector('.effects__list');
 
+const FILE_TYPES = ['jpeg', 'jpg'];
+
 export const inlineStyles = {
   chrome: 'grayscale(value)',
   sepia: 'sepia(value)',
@@ -18,6 +20,14 @@ export const inlineStyles = {
 let selectedEffect = 'none';
 
 sliderValueElement.value = 1;
+
+const renderPreview = (fileChooser) => {
+  const file = fileChooser.files[0];
+  const fileName = file.name.toLowerCase();
+  if (FILE_TYPES.some((extension) => fileName.endsWith(extension))) {
+    previewImageElement.src = URL.createObjectURL(file);
+  }
+};
 
 noUiSlider.create(sliderElement, {
   ...Effect.DEFAULT,
@@ -59,7 +69,10 @@ effectsList.addEventListener('change', (evt) => {
   }
 });
 
-const openPhotoEditor = () => photoEditor.classList.remove('hidden');
+const openPhotoEditor = (fileChooser) => {
+  photoEditor.classList.remove('hidden');
+  renderPreview(fileChooser);
+};
 
 const closePhotoEditor = () => {
   photoEditor.classList.add('hidden');
@@ -69,5 +82,5 @@ const closePhotoEditor = () => {
 
 export {
   openPhotoEditor,
-  closePhotoEditor
+  closePhotoEditor,
 };

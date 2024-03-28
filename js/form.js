@@ -2,11 +2,7 @@ import { isEscapeKey } from './utils.js';
 import { sendData } from './api.js';
 import { validation, resetValidation } from './validation.js';
 import { openPhotoEditor, closePhotoEditor } from './photo-editor.js';
-import {
-  showAlert,
-  deleteAlert,
-  AlertTemplateId,
-} from './alert.js';
+import { showAlert, deleteAlert, AlertTemplateId } from './alert.js';
 
 const uploadFormElement = document.querySelector('.img-upload__form');
 const fileInputElement =
@@ -45,7 +41,7 @@ const documentKeydownHandler = (evt) => {
 };
 
 const openForm = () => {
-  openPhotoEditor();
+  openPhotoEditor(fileInputElement);
   pageBody.classList.add('modal-open');
   document.addEventListener('keydown', documentKeydownHandler);
 };
