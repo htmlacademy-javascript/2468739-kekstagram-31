@@ -4,6 +4,11 @@ import { validation, resetValidation } from './validation.js';
 import { openPhotoEditor, closePhotoEditor } from './photo-editor.js';
 import { showAlert, deleteAlert, AlertTemplateId } from './alert.js';
 
+const SubmitButtonText = {
+  IDLE: 'Опубликовать',
+  SENDING: 'Отправляю...',
+};
+
 const uploadFormElement = document.querySelector('.img-upload__form');
 const fileInputElement =
   uploadFormElement.querySelector('.img-upload__input');
@@ -12,19 +17,14 @@ const submitButtonElement = uploadFormElement.querySelector('.img-upload__submit
 const hashtagsValueElement = uploadFormElement.querySelector('.text__hashtags');
 const commentValueElement =
   uploadFormElement.querySelector('.text__description');
-const pageBody = document.querySelector('body');
-
-const SubmitButtonText = {
-  IDLE: 'Опубликовать',
-  SENDING: 'Отправляю...',
-};
+const pageBodyElement = document.querySelector('body');
 
 const closeForm = () => {
   fileInputElement.value = '';
   uploadFormElement.reset();
   resetValidation();
   closePhotoEditor();
-  pageBody.classList.remove('modal-open');
+  pageBodyElement.classList.remove('modal-open');
 };
 
 const documentKeydownHandler = (evt) => {
@@ -42,7 +42,7 @@ const documentKeydownHandler = (evt) => {
 
 const openForm = () => {
   openPhotoEditor(fileInputElement);
-  pageBody.classList.add('modal-open');
+  pageBodyElement.classList.add('modal-open');
   document.addEventListener('keydown', documentKeydownHandler);
 };
 

@@ -1,8 +1,6 @@
 import { renderPhotos } from './render-photos.js';
 import { getRandomArrayElement, debounce } from './utils.js';
 
-const filtersElement = document.querySelector('.img-filters');
-
 const RANDOM_PHOTOS_LENGTH = 10;
 const RERENDER_DELAY = 500;
 
@@ -11,6 +9,8 @@ const FilterButtonId = {
   RANDOM: 'filter-random',
   DISCUSSED: 'filter-discussed',
 };
+
+const filtersElement = document.querySelector('.img-filters');
 
 const showFilters = () => filtersElement.classList.remove('img-filters--inactive');
 

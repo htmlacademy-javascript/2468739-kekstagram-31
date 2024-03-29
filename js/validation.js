@@ -1,5 +1,3 @@
-const uploadFormElement = document.querySelector('.img-upload__form');
-
 const MAX_COMMENT_LENGTH = 140;
 const MAX_HASHTAG_COUNT = 5;
 
@@ -15,6 +13,8 @@ const ErrorMessage = {
     BIG_COMMENT_LENGTH:`длина комментария больше ${MAX_COMMENT_LENGTH} символов`,
   }
 };
+
+const uploadFormElement = document.querySelector('.img-upload__form');
 
 const pristine = new Pristine(
   uploadFormElement,
