@@ -14,14 +14,13 @@ const filtersElement = document.querySelector('.img-filters');
 
 const showFilters = () => filtersElement.classList.remove('img-filters--inactive');
 
-const getActiveClassElement = (clickedButton) => {
+const toggleActiveClassElement = (clickedButton) => {
   const currentActiveClassButton = filtersElement.querySelector('.img-filters__button--active');
   if (clickedButton === currentActiveClassButton) {
     return currentActiveClassButton;
   }
   currentActiveClassButton.classList.remove('img-filters__button--active');
   clickedButton.classList.add('img-filters__button--active');
-  return clickedButton;
 };
 
 const renderDefaultPhotos = (photos) => renderPhotos(photos);
@@ -49,10 +48,8 @@ const renderDiscussedPhotos = (photos) => {
   renderPhotos(sortedPhotos);
 };
 
-const applyCheckedFilter = (clickFilterButtonElement, photos) => {
-  const checkedElement = getActiveClassElement(clickFilterButtonElement);
-
-  switch (checkedElement.id) {
+const applyCheckedFilter = (photos) => {
+  switch (document.activeElement.id) {
     case FilterButtonId.DEFAULT:
       renderDefaultPhotos(photos);
       break;
@@ -64,17 +61,18 @@ const applyCheckedFilter = (clickFilterButtonElement, photos) => {
   }
 };
 
-const filterButtonClickHandler = (evt, photos) => {
-  if (evt.target.matches('.img-filters__button')) {
-    evt.stopPropagation();
-    applyCheckedFilter(evt.target, photos);
-  }
+const filterButtonClickHandler = (photos) => {
+  applyCheckedFilter(photos);
 };
 
 const setFilterButtonClickHandler =
- (photos) => filtersElement.addEventListener(
-   'click',
-   debounce((evt) => filterButtonClickHandler(evt, photos), RERENDER_DELAY)
+ (photos) => filtersElement.addEventListener('click', (evt) => {
+   if (evt.target.matches('.img-filters__button')) {
+     evt.stopPropagation();
+     toggleActiveClassElement(evt.target);
+     debounce(() => filterButtonClickHandler(photos), RERENDER_DELAY)();
+   }
+ }
  );
 
 export {

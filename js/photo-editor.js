@@ -1,7 +1,7 @@
 import { Effect } from './constants.js';
 import { resetScale } from './scale.js';
 
-const FILE_TYPES = ['jpeg', 'jpg'];
+const FILE_TYPES = ['jpeg', 'jpg', 'png'];
 
 const inlineStyles = {
   chrome: 'grayscale(value)',
@@ -13,6 +13,7 @@ const inlineStyles = {
 
 const photoEditorElement = document.querySelector('.img-upload__overlay');
 const previewImageElement = photoEditorElement.querySelector('.img-upload__preview img');
+const previewEffectsElements = photoEditorElement.querySelectorAll('.effects__preview');
 const sliderElement = photoEditorElement.querySelector('.effect-level__slider');
 const sliderValueElement = photoEditorElement.querySelector('.effect-level__value');
 const effectsListElement = photoEditorElement.querySelector('.effects__list');
@@ -25,7 +26,14 @@ const renderPreview = (fileChooser) => {
   const file = fileChooser.files[0];
   const fileName = file.name.toLowerCase();
   if (FILE_TYPES.some((extension) => fileName.endsWith(extension))) {
-    previewImageElement.src = URL.createObjectURL(file);
+    const url = URL.createObjectURL(file);
+    previewImageElement.src = url;
+    previewEffectsElements.forEach((element) => {
+      element.style.backgroundImage = `url(${url})`;
+    }
+    );
+  } else {
+    file.reset();
   }
 };
 

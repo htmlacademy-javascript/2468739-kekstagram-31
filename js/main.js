@@ -20,6 +20,7 @@ getData()
     photosContainerElement.addEventListener('click', (evt) => {
       openModal(evt, photos);
     });
+    setPhotoFormSubmit();
   })
   .catch(() => {
     showAlert(AlertTemplateId.GET_DATA_ERROR);
@@ -29,4 +30,4 @@ getData()
     );
   });
 
-setPhotoFormSubmit();
+

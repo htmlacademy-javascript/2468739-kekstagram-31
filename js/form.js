@@ -1,6 +1,6 @@
 import { isEscapeKey } from './utils.js';
 import { sendData } from './api.js';
-import { validation, resetValidation } from './validation.js';
+import { validation, setValidation, resetValidation } from './validation.js';
 import { openPhotoEditor, closePhotoEditor } from './photo-editor.js';
 import { showAlert, deleteAlert, AlertTemplateId } from './alert.js';
 
@@ -32,16 +32,18 @@ const documentKeydownHandler = (evt) => {
     evt.preventDefault();
     if (document.activeElement === hashtagsValueElement || document.activeElement === commentValueElement) {
       evt.stopPropagation();
+    } else {
+      if (!deleteAlert()) {
+        closeForm();
+        document.removeEventListener('keydown', documentKeydownHandler);
+      }
     }
-    if (!deleteAlert()) {
-      closeForm();
-    }
-    document.removeEventListener('keydown', documentKeydownHandler);
   }
 };
 
 const openForm = () => {
   openPhotoEditor(fileInputElement);
+  setValidation(uploadFormElement, hashtagsValueElement, commentValueElement);
   pageBodyElement.classList.add('modal-open');
   document.addEventListener('keydown', documentKeydownHandler);
 };
@@ -77,14 +79,9 @@ const documentClickHandler = (evt) => {
   }
 };
 
-validation(
-  hashtagsValueElement,
-  commentValueElement
-);
-
 const setPhotoFormSubmit = () => uploadFormElement.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  if (validation(hashtagsValueElement, commentValueElement)) {
+  if (validation()) {
     blockSubmitButton();
     sendData(
       new FormData(evt.target)
