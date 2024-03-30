@@ -10,16 +10,17 @@ import {
 } from './alert.js';
 import { setFilterButtonClickHandler, showFilters } from './photo-filters.js';
 
-const photosContainer = document.querySelector('.pictures');
+const photosContainerElement = document.querySelector('.pictures');
 
 getData()
   .then((photos) => {
     renderPhotos(photos);
     showFilters();
     setFilterButtonClickHandler(photos);
-    photosContainer.addEventListener('click', (evt) => {
+    photosContainerElement.addEventListener('click', (evt) => {
       openModal(evt, photos);
     });
+    setPhotoFormSubmit();
   })
   .catch(() => {
     showAlert(AlertTemplateId.GET_DATA_ERROR);
@@ -29,4 +30,4 @@ getData()
     );
   });
 
-setPhotoFormSubmit();
+

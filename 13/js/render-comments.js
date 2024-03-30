@@ -1,8 +1,9 @@
-const commentList = document.querySelector('.social__comments');
+const STEP_SHOW_COMMENTS_COUNT = 5;
+const DEFAULT_SHOW_COMMENTS_COUNT = 5;
+
+const commentListElement = document.querySelector('.social__comments');
 const showCommentCountElement = document.querySelector('.social__comment-shown-count');
 const totalCommentCountElement = document.querySelector('.social__comment-total-count');
-
-const STEP_SHOW_COMMENTS_COUNT = 5;
 
 const totalComments = [];
 let showCommentsCounter = 0;
@@ -11,32 +12,26 @@ const isMaxShowCommentsLength = () => showCommentsCounter >= totalComments.lengt
 
 const createCommentElement = (avatar, message, name) => {
   const commentElement = document.createElement('li');
-  const imageElement = document.createElement('img');
-  const textElement = document.createElement('p');
-
-  commentElement.append(imageElement);
-  commentElement.append(textElement);
-
   commentElement.classList.add('social__comment');
-  imageElement.classList.add('social__picture');
-  textElement.classList.add('social__text');
 
-  imageElement.setAttribute('src', avatar);
-  imageElement.setAttribute('alt', name);
-  imageElement.setAttribute('width', 35);
-  imageElement.setAttribute('height', 35);
+  const contentCommentElementTemplate =
+   `<img class="social__picture" src=${avatar} alt=${name} width="35" height="35">
+   <p class="social__text"></p>`;
+  commentElement.insertAdjacentHTML('afterbegin', contentCommentElementTemplate);
 
-  textElement.textContent = message;
-
+  commentElement.lastChild.textContent = message;
   return commentElement;
 };
 
 const renderComments = (comments = totalComments) => {
-  showCommentsCounter += STEP_SHOW_COMMENTS_COUNT;
+  const fragment = document.createDocumentFragment();
+  showCommentsCounter = showCommentsCounter === 0
+    ? DEFAULT_SHOW_COMMENTS_COUNT
+    : showCommentsCounter + STEP_SHOW_COMMENTS_COUNT;
   if (totalComments.length === 0) {
     totalComments.push(...comments);
   }
-  commentList.innerHTML = '';
+  commentListElement.innerHTML = '';
   showCommentCountElement.textContent =
     comments.length < showCommentsCounter ? comments.length : showCommentsCounter;
   totalCommentCountElement.textContent =
@@ -45,12 +40,13 @@ const renderComments = (comments = totalComments) => {
 
   showComments.forEach(({ avatar, message, name }) => {
     const commentElement = createCommentElement(avatar, message, name);
-    commentList.append(commentElement);
+    fragment.append(commentElement);
   });
+  commentListElement.append(fragment);
 };
 
 const resetComments = () => {
-  commentList.innerHTML = '';
+  commentListElement.innerHTML = '';
   totalComments.length = 0;
   showCommentsCounter = 0;
 };

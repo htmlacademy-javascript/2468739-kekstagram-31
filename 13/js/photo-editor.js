@@ -1,21 +1,22 @@
 import { Effect } from './constants.js';
 import { resetScale } from './scale.js';
 
-const photoEditor = document.querySelector('.img-upload__overlay');
-const previewImageElement = photoEditor.querySelector('.img-upload__preview img');
-const sliderElement = photoEditor.querySelector('.effect-level__slider');
-const sliderValueElement = photoEditor.querySelector('.effect-level__value');
-const effectsList = photoEditor.querySelector('.effects__list');
+const FILE_TYPES = ['jpeg', 'jpg', 'png'];
 
-const FILE_TYPES = ['jpeg', 'jpg'];
-
-export const inlineStyles = {
+const inlineStyles = {
   chrome: 'grayscale(value)',
   sepia: 'sepia(value)',
   marvin: 'invert(value%)',
   phobos: 'blur(valuepx)',
   heat: 'brightness(value)',
 };
+
+const photoEditorElement = document.querySelector('.img-upload__overlay');
+const previewImageElement = photoEditorElement.querySelector('.img-upload__preview img');
+const previewEffectsElements = photoEditorElement.querySelectorAll('.effects__preview');
+const sliderElement = photoEditorElement.querySelector('.effect-level__slider');
+const sliderValueElement = photoEditorElement.querySelector('.effect-level__value');
+const effectsListElement = photoEditorElement.querySelector('.effects__list');
 
 let selectedEffect = 'none';
 
@@ -25,7 +26,14 @@ const renderPreview = (fileChooser) => {
   const file = fileChooser.files[0];
   const fileName = file.name.toLowerCase();
   if (FILE_TYPES.some((extension) => fileName.endsWith(extension))) {
-    previewImageElement.src = URL.createObjectURL(file);
+    const url = URL.createObjectURL(file);
+    previewImageElement.src = url;
+    previewEffectsElements.forEach((element) => {
+      element.style.backgroundImage = `url(${url})`;
+    }
+    );
+  } else {
+    file.reset();
   }
 };
 
@@ -60,7 +68,7 @@ sliderElement.noUiSlider.on('update', () => {
   }
 });
 
-effectsList.addEventListener('change', (evt) => {
+effectsListElement.addEventListener('change', (evt) => {
   selectedEffect = evt.target.value;
   if (selectedEffect === 'none') {
     resetEffect();
@@ -70,12 +78,12 @@ effectsList.addEventListener('change', (evt) => {
 });
 
 const openPhotoEditor = (fileChooser) => {
-  photoEditor.classList.remove('hidden');
+  photoEditorElement.classList.remove('hidden');
   renderPreview(fileChooser);
 };
 
 const closePhotoEditor = () => {
-  photoEditor.classList.add('hidden');
+  photoEditorElement.classList.add('hidden');
   resetEffect();
   resetScale();
 };

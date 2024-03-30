@@ -1,8 +1,8 @@
-const cardTemplate = document.querySelector('#picture').content;
-const container = document.querySelector('.pictures');
+const cardTemplateElement = document.querySelector('#picture').content;
+const containerElement = document.querySelector('.pictures');
 
 const deletePhotos = () => {
-  const photoElements = container.querySelectorAll('.picture');
+  const photoElements = containerElement.querySelectorAll('.picture');
   photoElements.forEach((photoElement) => photoElement.remove());
 };
 
@@ -11,7 +11,7 @@ const renderPhotos = (photos) => {
   const fragment = document.createDocumentFragment();
 
   photos.forEach(({ url, description, likes, comments, id }) => {
-    const cardElement = cardTemplate.cloneNode(true);
+    const cardElement = cardTemplateElement.cloneNode(true);
 
     const linkElement = cardElement.querySelector('.picture');
     linkElement.dataset.pictureId = id;
@@ -28,7 +28,7 @@ const renderPhotos = (photos) => {
     fragment.append(cardElement);
   });
 
-  container.append(fragment);
+  containerElement.append(fragment);
 };
 
 export { renderPhotos };

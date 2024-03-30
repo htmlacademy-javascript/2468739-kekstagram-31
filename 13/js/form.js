@@ -1,8 +1,13 @@
 import { isEscapeKey } from './utils.js';
 import { sendData } from './api.js';
-import { validation, resetValidation } from './validation.js';
+import { validation, setValidation, resetValidation } from './validation.js';
 import { openPhotoEditor, closePhotoEditor } from './photo-editor.js';
 import { showAlert, deleteAlert, AlertTemplateId } from './alert.js';
+
+const SubmitButtonText = {
+  IDLE: 'Опубликовать',
+  SENDING: 'Отправляю...',
+};
 
 const uploadFormElement = document.querySelector('.img-upload__form');
 const fileInputElement =
@@ -12,19 +17,14 @@ const submitButtonElement = uploadFormElement.querySelector('.img-upload__submit
 const hashtagsValueElement = uploadFormElement.querySelector('.text__hashtags');
 const commentValueElement =
   uploadFormElement.querySelector('.text__description');
-const pageBody = document.querySelector('body');
-
-const SubmitButtonText = {
-  IDLE: 'Опубликовать',
-  SENDING: 'Отправляю...',
-};
+const pageBodyElement = document.querySelector('body');
 
 const closeForm = () => {
   fileInputElement.value = '';
   uploadFormElement.reset();
   resetValidation();
   closePhotoEditor();
-  pageBody.classList.remove('modal-open');
+  pageBodyElement.classList.remove('modal-open');
 };
 
 const documentKeydownHandler = (evt) => {
@@ -32,17 +32,19 @@ const documentKeydownHandler = (evt) => {
     evt.preventDefault();
     if (document.activeElement === hashtagsValueElement || document.activeElement === commentValueElement) {
       evt.stopPropagation();
+    } else {
+      if (!deleteAlert()) {
+        closeForm();
+        document.removeEventListener('keydown', documentKeydownHandler);
+      }
     }
-    if (!deleteAlert()) {
-      closeForm();
-    }
-    document.removeEventListener('keydown', documentKeydownHandler);
   }
 };
 
 const openForm = () => {
   openPhotoEditor(fileInputElement);
-  pageBody.classList.add('modal-open');
+  setValidation(uploadFormElement, hashtagsValueElement, commentValueElement);
+  pageBodyElement.classList.add('modal-open');
   document.addEventListener('keydown', documentKeydownHandler);
 };
 
@@ -77,14 +79,9 @@ const documentClickHandler = (evt) => {
   }
 };
 
-validation(
-  hashtagsValueElement,
-  commentValueElement
-);
-
 const setPhotoFormSubmit = () => uploadFormElement.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  if (validation(hashtagsValueElement, commentValueElement)) {
+  if (validation()) {
     blockSubmitButton();
     sendData(
       new FormData(evt.target)

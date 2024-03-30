@@ -5,22 +5,22 @@ import {
   renderComments
 } from './render-comments.js';
 
-const modal = document.querySelector('.big-picture');
-const modalResetButton = modal.querySelector('.big-picture__cancel');
-const commentsLoaderButton = modal.querySelector('.comments-loader');
+const modalElement = document.querySelector('.big-picture');
+const modalResetButtonElement = modalElement.querySelector('.big-picture__cancel');
+const commentsLoaderButtonElement = modalElement.querySelector('.comments-loader');
 
 const hideCommentsLoaderButton = () => {
-  commentsLoaderButton.classList.add('hidden');
+  commentsLoaderButtonElement.classList.add('hidden');
 };
 
 const showCommentsLoaderButton = () => {
-  commentsLoaderButton.classList.remove('hidden');
+  commentsLoaderButtonElement.classList.remove('hidden');
 };
 
 const renderModalPhoto = ({ url, description, likes }) => {
-  modal.querySelector('.big-picture__img img').src = url;
-  modal.querySelector('.social__caption').textContent = description;
-  modal.querySelector('.likes-count').textContent = likes;
+  modalElement.querySelector('.big-picture__img img').src = url;
+  modalElement.querySelector('.social__caption').textContent = description;
+  modalElement.querySelector('.likes-count').textContent = likes;
 };
 
 const commentLoaderButtonClickHandler = () => {
@@ -31,11 +31,11 @@ const commentLoaderButtonClickHandler = () => {
 };
 
 const closeModal = () => {
-  modal.classList.add('hidden');
+  modalElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
   showCommentsLoaderButton();
 
-  commentsLoaderButton.removeEventListener('click', commentLoaderButtonClickHandler);
+  commentsLoaderButtonElement.removeEventListener('click', commentLoaderButtonClickHandler);
 
   resetComments();
 };
@@ -52,7 +52,7 @@ const openModal = (evt, photos) => {
   const cardElement = evt.target.closest('.picture');
   if (cardElement) {
     evt.preventDefault();
-    modal.classList.remove('hidden');
+    modalElement.classList.remove('hidden');
     document.body.classList.add('modal-open');
 
     document.addEventListener('keydown', documentKeydownHandler);
@@ -65,11 +65,11 @@ const openModal = (evt, photos) => {
       hideCommentsLoaderButton();
     }
 
-    commentsLoaderButton.addEventListener('click', commentLoaderButtonClickHandler);
+    commentsLoaderButtonElement.addEventListener('click', commentLoaderButtonClickHandler);
   }
 };
 
-modalResetButton.addEventListener('click', () => {
+modalResetButtonElement.addEventListener('click', () => {
   closeModal();
   document.removeEventListener('keydown', documentKeydownHandler);
 });
