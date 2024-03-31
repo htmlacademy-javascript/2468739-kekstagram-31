@@ -20,7 +20,7 @@ const effectsListElement = photoEditorElement.querySelector('.effects__list');
 
 let selectedEffect = 'none';
 
-sliderValueElement.value = 1;
+sliderValueElement.value = Effect.DEFAULT.start;
 
 const renderPreview = (fileChooser) => {
   const file = fileChooser.files[0];
@@ -32,8 +32,6 @@ const renderPreview = (fileChooser) => {
       element.style.backgroundImage = `url(${url})`;
     }
     );
-  } else {
-    file.reset();
   }
 };
 
