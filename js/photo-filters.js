@@ -2,7 +2,7 @@ import { renderPhotos } from './render-photos.js';
 import { getRandomArrayElement, debounce } from './utils.js';
 
 const RANDOM_PHOTOS_LENGTH = 10;
-const RERENDER_DELAY = 500;
+const RERENDER_DELAY = 3000;
 
 const FilterButtonId = {
   DEFAULT: 'filter-default',
@@ -14,11 +14,7 @@ const filtersElement = document.querySelector('.img-filters');
 
 const showFilters = () => filtersElement.classList.remove('img-filters--inactive');
 
-const toggleActiveClassElement = (clickedButton) => {
-  const currentActiveClassButton = filtersElement.querySelector('.img-filters__button--active');
-  if (clickedButton === currentActiveClassButton) {
-    return currentActiveClassButton;
-  }
+const toggleActiveClassElement = (clickedButton, currentActiveClassButton) => {
   currentActiveClassButton.classList.remove('img-filters__button--active');
   clickedButton.classList.add('img-filters__button--active');
 };
@@ -65,12 +61,18 @@ const filterButtonClickHandler = (photos) => {
   applyCheckedFilter(photos);
 };
 
+const renderDelay = debounce(filterButtonClickHandler, RERENDER_DELAY);
+
 const setFilterButtonClickHandler =
  (photos) => filtersElement.addEventListener('click', (evt) => {
    if (evt.target.matches('.img-filters__button')) {
      evt.stopPropagation();
-     toggleActiveClassElement(evt.target);
-     debounce(() => filterButtonClickHandler(photos), RERENDER_DELAY)();
+     const currentActiveClassButton = filtersElement.querySelector('.img-filters__button--active');
+     if (evt.target === currentActiveClassButton) {
+       return;
+     }
+     toggleActiveClassElement(evt.target, currentActiveClassButton);
+     renderDelay(photos);
    }
  }
  );
