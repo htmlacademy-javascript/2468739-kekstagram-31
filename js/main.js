@@ -1,7 +1,7 @@
-import { setPhotoFormSubmit } from './form.js';
+import { setPhotoFormSubmitHandler } from './form.js';
 import { getData } from './api.js';
 import { renderPhotos } from './render-photos.js';
-import { openModal } from './photo-modal.js';
+import { openModal } from './view-photo-modal.js';
 import {
   showAlert,
   deleteAlert,
@@ -10,14 +10,14 @@ import {
 } from './alert.js';
 import { setFilterButtonClickHandler, showFilters } from './photo-filters.js';
 
-const photosContainer = document.querySelector('.pictures');
+const photosContainerElement = document.querySelector('.pictures');
 
 getData()
   .then((photos) => {
     renderPhotos(photos);
     showFilters();
     setFilterButtonClickHandler(photos);
-    photosContainer.addEventListener('click', (evt) => {
+    photosContainerElement.addEventListener('click', (evt) => {
       openModal(evt, photos);
     });
   })
@@ -29,4 +29,5 @@ getData()
     );
   });
 
-setPhotoFormSubmit();
+setPhotoFormSubmitHandler();
+
