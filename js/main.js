@@ -1,4 +1,4 @@
-import { setPhotoFormSubmit } from './form.js';
+import { setPhotoFormSubmitHandler } from './form.js';
 import { getData } from './api.js';
 import { renderPhotos } from './render-photos.js';
 import { openModal } from './view-photo-modal.js';
@@ -20,7 +20,6 @@ getData()
     photosContainerElement.addEventListener('click', (evt) => {
       openModal(evt, photos);
     });
-    setPhotoFormSubmit();
   })
   .catch(() => {
     showAlert(AlertTemplateId.GET_DATA_ERROR);
@@ -30,4 +29,5 @@ getData()
     );
   });
 
+setPhotoFormSubmitHandler();
 
