@@ -2,7 +2,7 @@ import { renderPhotos } from './render-photos.js';
 import { getRandomArrayElement, debounce } from './utils.js';
 
 const RANDOM_PHOTOS_LENGTH = 10;
-const RERENDER_DELAY = 3000;
+const RERENDER_DELAY = 500;
 
 const FilterButtonId = {
   DEFAULT: 'filter-default',

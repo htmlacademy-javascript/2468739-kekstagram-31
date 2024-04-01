@@ -79,7 +79,7 @@ const documentClickHandler = (evt) => {
   }
 };
 
-const setPhotoFormSubmit = () => uploadFormElement.addEventListener('submit', (evt) => {
+const setPhotoFormSubmitHandler = () => uploadFormElement.addEventListener('submit', (evt) => {
   evt.preventDefault();
   if (validation()) {
     blockSubmitButton();
@@ -101,4 +101,4 @@ const setPhotoFormSubmit = () => uploadFormElement.addEventListener('submit', (e
   }
 });
 
-export { setPhotoFormSubmit };
+export { setPhotoFormSubmitHandler };
