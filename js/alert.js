@@ -12,18 +12,26 @@ const AlertTemplateId = {
   GET_DATA_ERROR: '#data-error',
 };
 
+const isAlert = (className) => ALERT_ELEMENT_CLASSES.includes(className);
+
+const getAlertElement = () => {
+  const lastChildBody = document.body.children[document.body.children.length - 1];
+  return isAlert(lastChildBody.className)
+    ? lastChildBody
+    : null;
+};
+
+const createAlertFragment = (selector) => document.querySelector(selector).content.cloneNode(true);
+
 const showAlert = (selector) => {
-  const errorAlertTemplate = document.querySelector(selector).content;
-  const errorAlertElement = errorAlertTemplate.cloneNode(true);
-  document.body.append(errorAlertElement);
+  document.body.append(createAlertFragment(selector));
 };
 
 const deleteAlert = () => {
-  if (ALERT_ELEMENT_CLASSES.includes(document.body.children[document.body.children.length - 1].className)) {
-    document.body.children[document.body.children.length - 1].remove();
-    return true;
+  const alertElement = getAlertElement();
+  if (alertElement) {
+    alertElement.remove();
   }
-  return false;
 };
 
 export {
@@ -31,4 +39,5 @@ export {
   deleteAlert,
   ALERT_SHOW_TIME,
   AlertTemplateId,
+  getAlertElement
 };
