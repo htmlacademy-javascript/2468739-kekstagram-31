@@ -2,30 +2,26 @@ const MAX_COMMENT_LENGTH = 140;
 const MAX_HASHTAG_COUNT = 5;
 
 const ErrorMessage = {
-  Hashtag:
-  {
+  Hashtag: {
     INVALID_HASHTAG: 'введён невалидный хэштег',
     BIG_QUANTITY: 'превышено количество хэштегов',
     REPEAT_HASHTAG: 'хэштеги повторяются',
   },
-  Comment:
-  {
-    BIG_COMMENT_LENGTH:`длина комментария больше ${MAX_COMMENT_LENGTH} символов`,
-  }
+  Comment: {
+    BIG_COMMENT_LENGTH: `длина комментария больше ${MAX_COMMENT_LENGTH} символов`,
+  },
 };
 let pristine = null;
 
 let message = '';
 const getMessage = () => message;
 
-const createPristine = (uploadFormElement) => new Pristine(
-  uploadFormElement,
-  {
+const createPristine = (uploadFormElement) =>
+  new Pristine(uploadFormElement, {
     classTo: 'img-upload__field-wrapper',
     errorClass: 'img-upload__field-wrapper--error',
     errorTextParent: 'img-upload__field-wrapper',
-  },
-);
+  });
 
 const validateHashtags = (hashtagsString) => {
   const trimmedHashtagString = hashtagsString.trim();
@@ -40,18 +36,12 @@ const validateHashtags = (hashtagsString) => {
       message = ErrorMessage.Hashtag.BIG_QUANTITY;
       return false;
     }
-    if (
-      !hashtags.every(
-        (hashtag) => /^#[a-zа-яё0-9]{1,20}$/i.test(hashtag)
-      )
-    ) {
+    if (!hashtags.every((hashtag) => /^#[a-zа-яё0-9]{1,20}$/i.test(hashtag))) {
       message = ErrorMessage.Hashtag.INVALID_HASHTAG;
       return false;
     }
-    const uniqueArr = [...new Set(hashtags)];
-    if (
-      uniqueArr.length !== hashtags.length
-    ) {
+    const uniqueHashtags = [...new Set(hashtags)];
+    if (uniqueHashtags.length !== hashtags.length) {
       message = ErrorMessage.Hashtag.REPEAT_HASHTAG;
       return false;
     }
@@ -67,29 +57,25 @@ const validateComment = (commentText) => {
   return true;
 };
 
-const setValidation = (uploadFormElement, hashtagsValueElement, commentValueElement) => {
+const setValidation = (
+  uploadFormElement,
+  hashtagsValueElement,
+  commentValueElement
+) => {
   if (!pristine) {
     pristine = createPristine(uploadFormElement);
 
-    pristine.addValidator(
-      hashtagsValueElement,
-      validateHashtags,
-      getMessage
-    );
+    pristine.addValidator(hashtagsValueElement, validateHashtags, getMessage);
 
-    pristine.addValidator(
-      commentValueElement,
-      validateComment,
-      getMessage
-    );
+    pristine.addValidator(commentValueElement, validateComment, getMessage);
   }
 };
 
-const validation = () => pristine.validate();
+const validate = () => pristine.validate();
 const resetValidation = () => pristine.reset();
 
 export {
   setValidation,
-  validation,
-  resetValidation,
+  validate,
+  resetValidation
 };

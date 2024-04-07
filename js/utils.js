@@ -5,8 +5,8 @@ const getRandomPositiveInteger = (min, max) => {
   return Math.floor(Math.random() * (upper - lower + 1) + lower);
 };
 
-const getRandomArrayElement = (arr) =>
-  arr[getRandomPositiveInteger(0, arr.length - 1)];
+const getRandomArrayElement = (elements) =>
+  elements[getRandomPositiveInteger(0, elements.length - 1)];
 
 const debounce = (cb, timeoutDelay) => {
   let timeoutId;
